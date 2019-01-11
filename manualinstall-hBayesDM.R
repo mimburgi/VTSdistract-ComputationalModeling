@@ -1,0 +1,6 @@
+library(devtools)
+library(roxygen2)
+setwd("/Users/bryanjackson/Desktop/Mike-modeling/hBayesDM")
+document()
+setwd("/Users/bryanjackson/Desktop/Mike-modeling")
+install('hBayesDM')
