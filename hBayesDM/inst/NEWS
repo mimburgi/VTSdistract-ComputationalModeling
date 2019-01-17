@@ -1,0 +1,9 @@
+Sat Apr 02 2016 (0.2.1)
+1. Bug fixes 
+  * All models: Fix errors when indPars=“mode”
+  * ra_prospect model: Add description for column names of a data (*.txt) file
+2. Change
+  * Change standard deviations of ‘b’ and ‘pi’ priors in gng_* models	  
+
+Fri Mar 25 2016 (0.2.0)
+Initially released. 
