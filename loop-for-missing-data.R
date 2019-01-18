@@ -56,10 +56,10 @@ for (i in 1:numIter){
   changetrials = TRUE #this gets changed to false if the loop changes enough that we can use everyone
   tmpdf<-alltrials #this will be edited, broken up, saved out and fed into hBayesDM on each iteration
   while (changetrials == TRUE){ 
-  for (trialNum in length(tmpdf$choice)){
+  for (trialNum in (1:length(tmpdf$choice))){
     if (runif(1, 0.0, 1.0) < probchange){ #generates a random number, changes trial if numebr is less than prob change
-      tmpdf[i,"choice"]<-1
-      tmpdf[i,"RT"]<-meanRT
+      tmpdf[trialNum,"choice"]<-1
+      tmpdf[trialNum,"RT"]<-meanRT
     }#end if runif
   }#end for trial
   testacc<-aggregate(choice ~ subjID + condition + area, data = tmpdf, FUN = mean)
