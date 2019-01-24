@@ -5,7 +5,7 @@ library(hBayesDM)
 dir.create(file.path(getwd(), "tmpinput"))
 
 #number of times the model will be run
-numIter = 20
+numIter = 2
 #number of cores used
 numCores = 4
 
@@ -24,10 +24,10 @@ for (i in 1:numIter){
   taudf<- cbind(taudf, rep(NA, length(taudf$subjID)))
   colnames(taudf)[i+2]<-as.character(i)
 }
-acc_an_tau<-taudf
-acc_ca_tau<-taudf
-fp_an_tau<-taudf
-fp_ca_tau<-taudf
+acc_an_tau<-subset(taudf, subjID %in% alltrials$subjID[alltrials$condition == "A" & alltrials$area == "AC"])
+acc_ca_tau<-subset(taudf, subjID %in% alltrials$subjID[alltrials$condition == "C" & alltrials$area == "AC"])
+fp_an_tau<-subset(taudf, subjID %in% alltrials$subjID[alltrials$condition == "A" & alltrials$area == "FP"])
+fp_ca_tau<-subset(taudf, subjID %in% alltrials$subjID[alltrials$condition == "C" & alltrials$area == "FP"])
 sham_tau<-taudf
 #delta
 deltadf<-data.frame(levels(alltrials$subjID), rep(NA, length(levels(alltrials$subjID))))
@@ -36,10 +36,10 @@ for (i in 1:numIter){
   deltadf<- cbind(deltadf, rep(NA, length(deltadf$subjID)))
   colnames(deltadf)[i+2]<-as.character(i)
 }
-acc_an_delta<-deltadf
-acc_ca_delta<-deltadf
-fp_an_delta<-deltadf
-fp_ca_delta<-deltadf
+acc_an_delta<-subset(deltadf, subjID %in% alltrials$subjID[alltrials$condition == "A" & alltrials$area == "AC"])
+acc_ca_delta<-subset(deltadf, subjID %in% alltrials$subjID[alltrials$condition == "C" & alltrials$area == "AC"])
+fp_an_delta<-subset(deltadf, subjID %in% alltrials$subjID[alltrials$condition == "A" & alltrials$area == "FP"])
+fp_ca_delta<-subset(deltadf, subjID %in% alltrials$subjID[alltrials$condition == "C" & alltrials$area == "FP"])
 sham_delta<-deltadf
 #alpha
 alphadf<-data.frame(levels(alltrials$subjID), rep(NA, length(levels(alltrials$subjID))))
@@ -48,10 +48,10 @@ for (i in 1:numIter){
   alphadf<- cbind(alphadf, rep(NA, length(alphadf$subjID)))
   colnames(alphadf)[i+2]<-as.character(i)
 }
-acc_an_alpha<-alphadf
-acc_ca_alpha<-alphadf
-fp_an_alpha<-alphadf
-fp_ca_alpha<-alphadf
+acc_an_alpha<-subset(alphadf, subjID %in% alltrials$subjID[alltrials$condition == "A" & alltrials$area == "AC"])
+acc_ca_alpha<-subset(alphadf, subjID %in% alltrials$subjID[alltrials$condition == "C" & alltrials$area == "AC"])
+fp_an_alpha<-subset(alphadf, subjID %in% alltrials$subjID[alltrials$condition == "A" & alltrials$area == "FP"])
+fp_ca_alpha<-subset(alphadf, subjID %in% alltrials$subjID[alltrials$condition == "C" & alltrials$area == "FP"])
 sham_alpha<-alphadf
 
 #main loop
@@ -92,11 +92,11 @@ for (i in 1:numIter){
   
   
   #run model
-  acc_an_model<-choiceRTNoBeta_ddm("tmpinput/acc_an.txt", ncore = numCores, max_treedepth = 20)
-  acc_ca_model<-choiceRTNoBeta_ddm("tmpinput/acc_ca.txt", ncore = numCores, max_treedepth = 20)
-  fp_an_model<-choiceRTNoBeta_ddm("tmpinput/fp_an.txt", ncore = numCores, max_treedepth = 20)
-  fp_ca_model<-choiceRTNoBeta_ddm("tmpinput/fp_ca.txt", ncore = numCores, max_treedepth = 20)
-  sham_model<-choiceRTNoBeta_ddm("tmpinput/sham.txt", ncore = numCores, max_treedepth = 20)
+  acc_an_model<-choiceRTNoBeta_ddm("tmpinput/acc_an.txt", ncore = numCores, max_treedepth = 20, niter = 300, nwarmup = 100)
+  acc_ca_model<-choiceRTNoBeta_ddm("tmpinput/acc_ca.txt", ncore = numCores, max_treedepth = 20, niter = 300, nwarmup = 100)
+  fp_an_model<-choiceRTNoBeta_ddm("tmpinput/fp_an.txt", ncore = numCores, max_treedepth = 20, niter = 300, nwarmup = 100)
+  fp_ca_model<-choiceRTNoBeta_ddm("tmpinput/fp_ca.txt", ncore = numCores, max_treedepth = 20, niter = 300, nwarmup = 100)
+  sham_model<-choiceRTNoBeta_ddm("tmpinput/sham.txt", ncore = numCores, max_treedepth = 20, niter = 300, nwarmup = 100)
   
   #export to parameter dataframes
   for (subj in levels(acc_an$subjID)){
