@@ -1,8 +1,11 @@
 library(rstan)
 library(hBayesDM)
 
+#create temporary output directory
+dir.create(file.path(getwd(), "tmpinput"))
+
 #number of times the model will be run
-numIter = 2
+numIter = 20
 #number of cores used
 numCores = 4
 
@@ -33,7 +36,7 @@ for (i in 1:numIter){
   deltadf<- cbind(deltadf, rep(NA, length(deltadf$subjID)))
   colnames(deltadf)[i+2]<-as.character(i)
 }
-acc_an_tau<-taudf
+acc_an_delta<-deltadf
 acc_ca_delta<-deltadf
 fp_an_delta<-deltadf
 fp_ca_delta<-deltadf
@@ -72,6 +75,13 @@ for (i in 1:numIter){
   fp_an <- subset(tmpdf, condition == "A" & area == "FP")
   fp_ca <- subset(tmpdf, condition == "C" & area == "FP")
   sham <- subset(tmpdf, condition ==  "S")
+  
+  #remove unused subjects from each dataset (subjects that were not in each condition)
+  acc_an$subjID<-droplevels(acc_an$subjID)
+  acc_ca$subjID<-droplevels(acc_ca$subjID)
+  fp_an$subjID<-droplevels(fp_an$subjID)
+  fp_ca$subjID<-droplevels(fp_ca$subjID)
+  sham$subjID<-droplevels(sham$subjID)
   
   #write out dfs for input to hbayesdm
   write.table(acc_an, file = "tmpinput/acc_an.txt", row.names = FALSE)
@@ -160,4 +170,8 @@ allalpha<-rbind(acc_an_alpha, acc_ca_alpha, fp_an_alpha, fp_ca_alpha, sham_alpha
 write.table(alltau, "alltau.txt", row.names = FALSE)
 write.table(alldelta, "alldelta.txt", row.names = FALSE)
 write.table(allalpha, "allalpha.txt", row.names = FALSE)
+
+#remove tmpinput folder created for the files being read into hBayesDM
+#will uncomment when I know this script works
+#unlink("tmpinput", recursive = TRUE)
 
