@@ -154,6 +154,7 @@ choiceRTNoBeta_ddm <- function(data           = "choose",
   subjList <- unique(rawdata[,"subjID"])  # list of subjects x blocks
   numSubjs <- length(subjList)  # number of subjects
   
+  
   # Specify the number of parameters and parameters of interest 
   numPars <- 3
   POI     <- c("mu_alpha", "mu_delta", "mu_tau",

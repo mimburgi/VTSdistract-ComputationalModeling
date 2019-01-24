@@ -1,6 +1,6 @@
 library(devtools)
 library(roxygen2)
-setwd("/Users/bryanjackson/Desktop/Mike-modeling/hBayesDM")
+setwd("/Users/mimburgi/Desktop/VTS_CompModel/hBayesDM")
 document()
-setwd("/Users/bryanjackson/Desktop/Mike-modeling")
+setwd("/Users/mimburgi/Desktop/VTS_CompModel")
 install('hBayesDM')
